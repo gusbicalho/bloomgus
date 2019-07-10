@@ -9,6 +9,8 @@ copyright:           "2019 Gustavo Bicalho"
 extra-source-files:
 - README.md
 - ChangeLog.md
+- src/cbits/*.c
+- src/cbits/*.h
 
 # Metadata used when publishing your package
 # synopsis:            Short description of your package
@@ -22,9 +24,24 @@ description:         Please see the README on GitHub at <https://github.com/gusb
 dependencies:
 - base >= 4.7 && < 5
 - bytestring
+- array
+
+ghc-options:
+- -O2
+- -Wall
+ghc-prof-options: -auto-all
+c-sources: src/cbits/*.c
+cc-options: -O3
+include-dirs: src/cbits
+install-includes: src/cbits/lookup3.h
 
 library:
   source-dirs: src
+  exposed-modules:
+  - Bloomgus.Immutable
+  - Bloomgus.Mutable
+  - Bloomgus.Easy
+  - Bloomgus.Hash
 
 executables:
   bloomgus-exe:
@@ -36,6 +53,7 @@ executables:
     - -with-rtsopts=-N
     dependencies:
     - bloomgus
+    - unix
 
 tests:
   bloomgus-test:
