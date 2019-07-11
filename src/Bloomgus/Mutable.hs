@@ -37,10 +37,10 @@ allM mPred (a:as) = do
   ok <- mPred a
   if ok then return True else allM mPred as
 
-elem :: MutBloom s a -> a -> ST s Bool
-elem filt e = do
+elem :: a -> MutBloom s a -> ST s Bool
+elem e  filt = do
   bits <- bitIndices filt e
   allM (readArray (mutArray filt)) bits
 
-notElem :: MutBloom s a -> a -> ST s Bool
-notElem filt e = not <$> elem filt e
+notElem :: a -> MutBloom s a -> ST s Bool
+notElem e filt = not <$> e `elem` filt

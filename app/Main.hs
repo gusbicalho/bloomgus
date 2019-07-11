@@ -21,7 +21,7 @@ getLines path = L8.lines <$> contents path
   where contents "-"   = L8.hGetContents stdin
         contents path' = L8.readFile path'
 
-sumAndCount :: (Foldable t, Num a, Num b) => t a -> (a, b) 
+sumAndCount :: (Foldable t, Num a, Num b) => t a -> (a, b)
 sumAndCount = foldl' acc (0, 0)
   where acc (!total, !count) x = (total + x, count + 1)
 
@@ -30,7 +30,7 @@ mean [] = 0
 mean xss = uncurry (/) . sumAndCount $ xss
 
 estimateCapacity :: FilePath -> [L8.ByteString] -> IO Integer
-estimateCapacity path ls = (`div` estimatedLineSize) . fromIntegral <$> getFileSize path 
+estimateCapacity path ls = (`div` estimatedLineSize) . fromIntegral <$> getFileSize path
   where
     firstFew = take 10
     estimatedLineSize :: Integer
@@ -49,7 +49,7 @@ loadBloom path = do
 
 testAll :: Bl.Bloom L8.ByteString -> [L8.ByteString] -> [(L8.ByteString, Bool)]
 testAll bloom = map testResult
-  where testResult test = (test, Bl.elem bloom test)
+  where testResult test = (test, test `Bl.elem` bloom)
 
 run :: FilePath -> FilePath -> IO ()
 run filterPath testPath = do

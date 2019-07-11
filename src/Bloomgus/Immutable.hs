@@ -24,11 +24,11 @@ bitIndices :: Bloom a -> a -> [Word32]
 bitIndices filt e = map (`mod` modulus) (blmHash filt e)
   where modulus = length' filt
 
-elem :: Bloom a -> a -> Bool
-elem filt e = all (blmArray filt !) (bitIndices filt e)
+elem :: a -> Bloom a -> Bool
+elem e filt = all (blmArray filt !) (bitIndices filt e)
 
-notElem :: Bloom a -> a -> Bool
-notElem filt e = not $ elem filt e
+notElem :: a -> Bloom a -> Bool
+notElem e filt = not $ e `elem` filt
 
 length :: Bloom a -> Int
 length = fromIntegral . length'

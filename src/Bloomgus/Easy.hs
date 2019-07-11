@@ -7,6 +7,7 @@ module Bloomgus.Easy
   , fromList
   , simpleFromList
   , suggestSizing
+  , sizings
   , doubleHash
   ) where
 
@@ -19,7 +20,7 @@ import Bloomgus.Immutable
 import Prelude hiding (length, elem, notElem)
 
 simpleFromList :: Hashable a => Double -> [a] -> Either String (Bloom a)
-simpleFromList errorRate es = do 
+simpleFromList errorRate es = do
   (numBits, numHashes) <- suggestSizing errorRate (genericLength es)
   return $ fromList (doubleHash numHashes) numBits es
 

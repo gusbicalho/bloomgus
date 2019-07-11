@@ -11,7 +11,7 @@ module Bloomgus.Hash
 import Data.Bits ((.&.), shiftR)
 import Foreign.Marshal.Array (withArrayLen)
 import Control.Monad (foldM)
-import Data.Word (Word32, Word64)
+import Data.Word (Word8, Word16, Word32, Word64)
 import Foreign.C.Types (CSize(..))
 import Foreign.Marshal.Utils (with)
 import Foreign.Ptr (Ptr, castPtr, plusPtr)
@@ -68,6 +68,10 @@ doubleHash = doubleHashSalt defaultDoublingSalt
 -- Implementations for hashSalt
 
 instance Hashable Char   where hashSalt = hashStorable
+instance Hashable Word8  where hashSalt = hashStorable
+instance Hashable Word16 where hashSalt = hashStorable
+instance Hashable Word32 where hashSalt = hashStorable
+instance Hashable Word64 where hashSalt = hashStorable
 instance Hashable Int    where hashSalt = hashStorable
 instance Hashable Double where hashSalt = hashStorable
 
