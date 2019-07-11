@@ -1,6 +1,3 @@
-{-# LANGUAGE
-    BlockArguments
-  #-}
 module Bloomgus.Mutable
   ( MutBloom
   , elem
@@ -22,7 +19,7 @@ new :: Hasher a -> Word32 -> ST s (MutBloom s a)
 new hash numBits = MB hash <$> newArray (0,numBits-1) False
 
 length :: MutBloom s a -> ST s Word32
-length filt = (succ . snd) <$> getBounds (mutArray filt)
+length filt = succ . snd <$> getBounds (mutArray filt)
 
 bitIndices :: MutBloom s a -> a -> ST s [Word32]
 bitIndices filt e = hashModulus <$> length filt
@@ -31,7 +28,7 @@ bitIndices filt e = hashModulus <$> length filt
 insert :: MutBloom s a -> a -> ST s ()
 insert filt e = do
   bits <- bitIndices filt e
-  forM_ bits \bit ->
+  forM_ bits $ \bit ->
     writeArray (mutArray filt) bit True
 
 allM :: Monad m => (a -> m Bool) -> [a] -> m Bool

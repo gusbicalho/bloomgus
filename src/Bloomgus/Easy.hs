@@ -14,7 +14,7 @@ import Bloomgus.Internal
 import Bloomgus.Hash
 import Data.Word (Word32)
 import Data.List (genericLength)
-import Data.Maybe (catMaybes)
+import Data.Maybe (mapMaybe)
 import Bloomgus.Immutable
 import Prelude hiding (length, elem, notElem)
 
@@ -29,7 +29,7 @@ suggestSizing errRate capacity
     | errRate <= 0 || errRate >= 1 = Left "invalid error rate"
     | null saneSizes               = Left "capacity too large"
     | otherwise                    = Right (minimum saneSizes)
-  where saneSizes = catMaybes . map sanitize $ sizings capacity errRate
+  where saneSizes = mapMaybe sanitize $ sizings capacity errRate
         sanitize (bits,hashes)
           | bits > maxWord32 - 1 = Nothing
           | otherwise            = Just (ceiling bits, truncate hashes)
@@ -37,5 +37,5 @@ suggestSizing errRate capacity
 
 sizings :: Integer -> Double -> [(Double, Double)]
 sizings capacity errRate =
-    [(((-k) * cap / log (1 - (errRate ** (1 / k)))), k) | k <- [1..50]]
+    [((-k) * cap / log (1 - (errRate ** (1 / k))), k) | k <- [1..50]]
   where cap = fromIntegral capacity

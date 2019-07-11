@@ -1,4 +1,6 @@
-{-# LANGUAGE BangPatterns, ForeignFunctionInterface #-}
+{-# LANGUAGE
+    ForeignFunctionInterface
+  #-}
 module Bloomgus.Hash
   ( Hashable (..)
   , hash
