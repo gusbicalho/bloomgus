@@ -65,3 +65,5 @@ tests:
     - -with-rtsopts=-N
     dependencies:
     - bloomgus
+    - hspec
+    - QuickCheck
