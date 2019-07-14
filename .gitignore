@@ -1,3 +1,6 @@
 .stack-work/
 bloomgus.cabal
 *~
+*.hi
+*.o
+*.prof

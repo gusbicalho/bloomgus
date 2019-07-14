@@ -1,5 +1,6 @@
 {-# LANGUAGE
-    ForeignFunctionInterface
+    BangPatterns
+  , ForeignFunctionInterface
   #-}
 module Bloomgus.Hash
   ( Hashable (..)
@@ -56,11 +57,13 @@ hash :: Hashable a => a -> Word64
 hash = hashSalt defaultHashingSalt
 
 doubleHashSalt :: Hashable a => Word64 -> Int -> a -> [Word32]
-doubleHashSalt salt numHashes value = [h1 + h2 * i | i <- [0..num]]
-    where h   = hashSalt salt value
-          h1  = fromIntegral (h `shiftR` 32) .&. maxBound
-          h2  = fromIntegral h
-          num = fromIntegral numHashes
+doubleHashSalt salt numHashes value = go 0
+    where go n | n == num  = []
+               | otherwise = h1 + h2 * n : go (n + 1)
+          !h   = hashSalt salt value
+          !h1  = fromIntegral (h `shiftR` 32) .&. maxBound
+          !h2  = fromIntegral h
+          !num = fromIntegral numHashes
 
 doubleHash :: Hashable a => Int -> a -> [Word32]
 doubleHash = doubleHashSalt defaultDoublingSalt

@@ -29,7 +29,6 @@ dependencies:
 ghc-options:
 - -O2
 - -Wall
-ghc-prof-options: -auto-all
 c-sources: src/cbits/*.c
 cc-options: -O3
 include-dirs: src/cbits
@@ -49,11 +48,25 @@ executables:
     source-dirs:         app
     ghc-options:
     - -threaded
-    - -rtsopts
+    - -rtsopts=some
     - -with-rtsopts=-N
     dependencies:
     - bloomgus
     - unix
+  profiling-exe:
+    main: Words.hs
+    source-dirs: profiling
+    ghc-options:
+    - -threaded
+    - -rtsopts=all
+    - -with-rtsopts=-N
+    - -O2
+    - -fprof-auto
+    dependencies:
+    - bloomgus
+    - parallel
+    - deepseq
+    - time
 
 tests:
   bloomgus-test:
